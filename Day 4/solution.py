@@ -10,29 +10,32 @@ def split_input():
         return tests
 
 
-def parse_test(pole):
+def parse_test(pole_input, otazka:int):
     fields = []
-    for i in pole:
+    for i in pole_input:
         i = i.replace('\n', ' ').split()
         field = []
         for value in i:
             value = value.split(':')
-            if value[0] == 'byr' and (1920 <= int(value[1]) <= 2002):
-                field.append(value[0])
-            if value[0] == 'iyr' and (2010 <= int(value[1]) <= 2020):
-                field.append(value[0])
-            if value[0] == 'eyr' and (2020 <= int(value[1]) <= 2030):
-                field.append(value[0])
-            if value[0] == 'hgt' and (value[1][::-1][0:2] == 'mc' or value[1][::-1][0:2] == 'ni'):
-                if value[1][::-1][0:2] == 'mc' and 150 <= int(value[1][::-1][2:][::-1]) <= 193:
+            if otazka == 2:
+                if value[0] == 'byr' and (1920 <= int(value[1]) <= 2002):
                     field.append(value[0])
-                elif value[1][::-1][0:2] == 'ni' and 59 <= int(value[1][::-1][2:][::-1]) <= 76:
+                if value[0] == 'iyr' and (2010 <= int(value[1]) <= 2020):
                     field.append(value[0])
-            if value[0] == 'hcl' and re.match("^#[a-fA-F0-9]{6}$", value[1]):
-                field.append(value[0])
-            if value[0] == 'ecl' and value[1] in ['amb', 'blu', 'grn', 'gry', 'brn', 'hzl', 'oth']:
-                field.append(value[0])
-            if value[0] == 'pid' and re.match('[0-9]{9}', value[1]):
+                if value[0] == 'eyr' and (2020 <= int(value[1]) <= 2030):
+                    field.append(value[0])
+                if value[0] == 'hgt' and (value[1][::-1][0:2] == 'mc' or value[1][::-1][0:2] == 'ni'):
+                    if value[1][::-1][0:2] == 'mc' and 150 <= int(value[1][::-1][2:][::-1]) <= 193:
+                        field.append(value[0])
+                    elif value[1][::-1][0:2] == 'ni' and 59 <= int(value[1][::-1][2:][::-1]) <= 76:
+                        field.append(value[0])
+                if value[0] == 'hcl' and re.match("^#[a-fA-F0-9]{6}$", value[1]):
+                    field.append(value[0])
+                if value[0] == 'ecl' and value[1] in ['amb', 'blu', 'grn', 'gry', 'brn', 'hzl', 'oth']:
+                    field.append(value[0])
+                if value[0] == 'pid' and re.match('[0-9]{9}', value[1]):
+                    field.append(value[0])
+            else:
                 field.append(value[0])
         fields.append(field)
     return fields
@@ -46,10 +49,11 @@ def valid_passports(fields):
                 valid += 1
             if 'cid' not in field and len(field) == 7:
                 valid += 1
-    return valid - 1
+    return valid
 
 
 if __name__ == "__main__":
     pole = split_input()
-    print(valid_passports(parse_test(pole)))
+    print(f'Prvni otazka: {valid_passports(parse_test(pole, 1))}')
+    print(f'Druha otazka: {valid_passports(parse_test(pole, 2))-1}')
 
