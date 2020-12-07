@@ -1,6 +1,5 @@
 import os
 import sys
-import time
 
 
 def split_input():
@@ -34,7 +33,7 @@ def conquer(letter,row,column):
     return row, column
 
 def occupied(pole):
-    occupied = [*range(89,990)]
+    occupied = [*range(89, 990)]
     for seat in occupied:
         if seat not in pole:
             return seat
